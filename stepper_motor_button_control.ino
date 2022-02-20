@@ -6,8 +6,8 @@
 
 // Stepper setup
   const int StepperSpeed = 200;
-  const int StepperMaxSpeed = 2038;
-  const int StepperAccel = 119;
+  const int StepperMaxSpeed = 1000.0;
+  const int StepperAccel = 50.0;
   int StepperGoal = 0;
 
   const int StepperPin1 = 10;
@@ -37,7 +37,10 @@ void setup() {
 
 void loop() {
     // Button A - Button B times StepsPreRevolution devided by 1000 for 1MS times the polling rate.
-      StepperGoal += digitalRead(ButtonA) - digitalRead(ButtonB);
-      myStepper.moveTo(StepperGoal);
+      if (myStepper.distanceToGo() > -1000 && !myStepper.distanceToGo() < 1000){
+          StepperGoal += digitalRead(ButtonA) - digitalRead(ButtonB);
+          myStepper.moveTo(StepperGoal);
+      }
       myStepper.run();
+      delay(1);
 }
